@@ -1,18 +1,14 @@
 # Web Unified Docs
 
-> [!IMPORTANT]
-> This README is for developers working on the documentation website. If you
-> want to contribute docs content, refer to the [Contribute to HashiCorp
-> documentation](CONTRIBUTING.md) guide.
 
----
-
-The project in this repository, `hashicorp/web-unified-docs`, aims to implement [[DEVDOT-023] Unified Product Documentation Repository](https://docs.google.com/document/d/1p8kOqySttvWUVfn7qiC4wGBR73LMBGMelwLt69pM3FQ/edit). The RFC for this project was intentionally light on implementation details, in order to foster consensus on the broad direction.
+The project in this repository, `hashicorp/web-unified-docs`, aims to implement [[DEVDOT-023] Unified Product Documentation Repository](https://docs.google.com/document/d/1p8kOqySttvWUVfn7qiC4wGBR73LMBGMelwLt69pM3FQ/edit)
+* The RFC for this project was intentionally light on implementation details, in order to foster consensus on the broad direction.
 
 - **PR previews**: Show broken links in comments for awareness (informational only, don't block PRs)
 - **Production monitoring**: Weekly scans create GitHub issues and send critical alerts to Datadog when users are affected
 
-The weekly [`broken-link-check-full`](https://github.com/hashicorp/web-unified-docs/blob/main/.github/workflows/broken-link-check-full.yml) workflow generates comprehensive broken link reports with prioritization guidance. When contributors create PRs that modify content, the link checker shows any broken links in PR comments with actionable guidance without blocking development.
+The weekly [`broken-link-check-full`](https://github.com/hashicorp/web-unified-docs/blob/main/.github/workflows/broken-link-check-full.yml) workflow generates comprehensive broken link reports with prioritization guidance
+* When contributors create PRs that modify content, the link checker shows any broken links in PR comments with actionable guidance without blocking development.
 
 **Quick tips for contributors**:
 
@@ -21,14 +17,17 @@ The weekly [`broken-link-check-full`](https://github.com/hashicorp/web-unified-d
 - **Consider removing unreliable external links** (low priority)
 
 For detailed information about the monitoring system, see [Broken Link
-Monitoring Documentation](./.github/BROKEN_LINK_MONITORING.md). The [Unified Product Documentation
+Monitoring Documentation](./.github/BROKEN_LINK_MONITORING.md)
+* The [Unified Product Documentation
 Repository RFC](https://docs.google.com/document/d/1p8kOqySttvWUVfn7qiC4wGBR73LMBGMelwLt69pM3FQ/edit)
 for this project was intentionally light on implementation details, in order
 to foster consensus on the broad direction.
 
-The existing API (`content.hashicorp.com`) has endpoints that serve documentation content. You can find the source code in [hashicorp/mktg-content-workflows](https://github.com/hashicorp/mktg-content-workflows/blob/main/api/content.ts).
+The existing API (`content.hashicorp.com`) has endpoints that serve documentation content
+* You can find the source code in [hashicorp/mktg-content-workflows](https://github.com/hashicorp/mktg-content-workflows/blob/main/api/content.ts).
 
-The goal of the unified docs API is to host all of HashiCorp's product documentation. The unified docs API will eventually replace the existing content API.
+The goal of the unified docs API is to host all of HashiCorp's product documentation
+* The unified docs API will eventually replace the existing content API.
 
 ## Local development
 
@@ -38,18 +37,24 @@ The goal of the unified docs API is to host all of HashiCorp's product documenta
 
 ### Quick start
 
-To get a migration preview running, run `make` from the root of this repo. The `make` command starts the `unified-docs` Docker profile that spins up a local instance of `unified-devdot-api` and `dev-portal`.
+To get a migration preview running, run `make` from the root of this repo
+* The `make` command starts the `unified-docs` Docker profile that spins up a local instance of `unified-devdot-api` and `dev-portal`.
 
 Once this command completes, you can access the following endpoints:
 
-- http://localhost:3000 - An instance of the `dev-portal` container configured to pull from the experimental docs API (this repo). This image depends on the unified docs API (`unified-devdot-api`).
+- http://localhost:3000 - An instance of the `dev-portal` container configured to pull from the experimental docs API (this repo)
+* This image depends on the unified docs API (`unified-devdot-api`).
 
-- http://localhost:8080 - An instance of the unified docs API container (this repo - `unified-devdot-api`) that serves content from the `content` directory. On startup, this container processes the content and assets in `/content` into `public/assets` and `public/content`. In addition, the container also generates `app/api/docsPaths.json` and `app/api/versionMetadata.json` from the contents within `/content`.
+- http://localhost:8080 - An instance of the unified docs API container (this repo - `unified-devdot-api`) that serves content from the `content` directory
+* On startup, this container processes the content and assets in `/content` into `public/assets` and `public/content`
+* In addition, the container also generates `app/api/docsPaths.json` and `app/api/versionMetadata.json` from the contents within `/content`.
 
   Use the following example to test this endpoint: http://localhost:8080/api/content/terraform-plugin-framework/doc/latest/plugin/framework
 
 > [!NOTE]
-> The unified docs API container takes time to process the content and assets. You must wait for both the `unified-devdot-api` and `dev-portal` containers to complete before you can successfully test content in the `dev-portal` preview environment (`localhost:3000`). Visit http://localhost:8080/api/all-docs-paths to verify the `unified-devdot-api` container is complete.
+> The unified docs API container takes time to process the content and assets
+* You must wait for both the `unified-devdot-api` and `dev-portal` containers to complete before you can successfully test content in the `dev-portal` preview environment (`localhost:3000`)
+* Visit http://localhost:8080/api/all-docs-paths to verify the `unified-devdot-api` container is complete.
 
 To spin this down gracefully, run `make clean` in a separate terminal.
 
@@ -57,7 +62,8 @@ If you wish to remove the local Docker images as well, run `make clean CLEAN_OPT
 
 ### More commands
 
-The `makefile` serves as a convenience tool start the local preview. If you need more granular control, the `package.json` file contains a full list of available commands.
+The `makefile` serves as a convenience tool start the local preview
+* If you need more granular control, the `package.json` file contains a full list of available commands.
 
 To use these, you will need to intentionally run `npm install` and `npm run prebuild` before anything else.
 
@@ -65,7 +71,8 @@ Use `npm run coverage` to run coverage tests.
 
 ### Preview environments for unified-docs and dev-portal
 
-Unified docs API serves as one of the content APIs for `dev-portal` (frontend application for DevDot). As a result, when implementing new features, you may need to modify both the backend (this repo) and the frontend (`dev-portal`).
+Unified docs API serves as one of the content APIs for `dev-portal` (frontend application for DevDot)
+* As a result, when implementing new features, you may need to modify both the backend (this repo) and the frontend (`dev-portal`).
 
 If you are working on a ticket that requires changes to both the unified docs API and `dev-portal`, please set [custom environment variables for your branch](https://vercel.com/hashicorp/dev-portal/settings/environment-variables) in Vercel to simplify testing instructions.
 
@@ -90,7 +97,8 @@ Reach out to team #team-web-presence if you need to do local API development
 - Publishing changes to multiple versions can be done in a single PR, as opposed to multiple PRs which is required by the current setup.
 - Finding and making the same change across multiple versions is as simple as doing a find-and-replace since all the versioned docs are on the filesystem at the same time.
 - Adding a new product is as easy as making a new folder, as opposed to the current process which requires code-changes on the API side and the installation of a GitHub App to monitor for events.
-- Sourcing from one branch in one repo eliminates the situation where a missed GitHub event can result in out-of-date documentation. If something goes wrong in the publishing process, simply run it again instead of relying on incoming commit/release events from the GitHub API.
+- Sourcing from one branch in one repo eliminates the situation where a missed GitHub event can result in out-of-date documentation
+* If something goes wrong in the publishing process, simply run it again instead of relying on incoming commit/release events from the GitHub API.
 - Since we can make edits to all docs for all products and versions from a single PR, making platform-level changes is dramatically simplified (such as updating to MDX v2, or rewriting URLs).
 - Adding new features like content conformance (basically linting for docs) can be done for the entire codebase at once.
 - Removes the ability for docs to break the release workflow in product repos.
@@ -100,7 +108,8 @@ Reach out to team #team-web-presence if you need to do local API development
 
 ## Update product repo documentation
 
-This script helps with product documentation migration to the web-unified-docs repository. When migrating documentation:
+This script helps with product documentation migration to the web-unified-docs repository
+* When migrating documentation:
 
 1. The `web-unified-docs` repository becomes the source of truth
 2. Original documentation may remain temporarily as a fallback
@@ -229,5 +238,7 @@ graph LR
 The diagram shows:
 
 - The content API — the existing system that sources product documentation content from product repositories
-- The unified docs API — the new system that sources product documentation from this repo's `/content` directory. The migrated repos will use a directory approach to versioning (rather than the historic branch and tag strategy)
-- The Dev Portal — the frontend that serves the main DevDot interface. Dev Portal sources its content from both the existing content API and unified docs API.
+- The unified docs API — the new system that sources product documentation from this repo's `/content` directory
+  - The migrated repos will use a directory approach to versioning (rather than the historic branch and tag strategy)
+- The Dev Portal — the frontend that serves the main DevDot interface
+  - Dev Portal sources its content from both the existing content API and unified docs API.

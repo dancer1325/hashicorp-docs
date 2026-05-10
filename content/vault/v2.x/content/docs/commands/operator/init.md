@@ -1,0 +1,95 @@
+---
+layout: docs
+page_title: operator init - Command
+description: |-
+  The "operator init" command initializes a Vault server. Initialization is the
+  process by which Vault's storage backend is prepared to receive data. Since
+  Vault servers share the same storage backend in HA mode, you only need to
+  initialize one Vault to initialize the storage backend.
+# START AUTO GENERATED METADATA, DO NOT EDIT
+created_at: 2026-04-15T00:14:37.000Z
+last_modified: 2026-04-15T00:14:37.000Z
+# END AUTO GENERATED METADATA
+---
+
+# `vault operator init`
+
+* initialize 1 Vault server
+  * == 💡initialize the storage backend💡
+    * == Vault's storage backend is prepared to receive data
+    * 👀Vault generates a root key👀 / 
+      * it's stored | storage backend
+      * [encrypted](/content/vault/v2.x/content/docs/concepts/seal.mdx)
+  * Reason why ONLY 1:🧠Vault servers share the SAME storage backend🧠
+  * ❌if you try to initialize an ALREADY initialized Vault server -> throws an error❌
+
+## Usage
+
+TODO: 
+The following flags are available in addition to the [standard set of
+flags](/vault/docs/commands) included on all commands.
+
+### Output options
+
+- `-format` `(string: "")` - Print the output in the given format. Valid formats
+  are "table", "json", or "yaml". The default is table. This can also be
+  specified via the `VAULT_FORMAT` environment variable.
+
+### Common options
+
+- `-key-shares` `(int: 5)` - Number of key shares to split the generated master
+  key into. This is the number of "unseal keys" to generate. This is aliased as
+  `-n`.
+
+- `-key-threshold` `(int: 3)` - Number of key shares required to reconstruct the
+  root key. This must be less than or equal to -key-shares. This is aliased as
+  `-t`.
+
+- `-pgp-keys` `(string: "...")` - Comma-separated list of paths to files on disk
+  containing public PGP keys OR a comma-separated list of Keybase usernames
+  using the format `keybase:<username>`. When supplied, the generated unseal
+  keys will be encrypted and base64-encoded in the order specified in this list.
+  The number of entries must match -key-shares, unless -stored-shares are used.
+
+- `-root-token-pgp-key` `(string: "")` - Path to a file on disk containing a
+  binary or base64-encoded public PGP key. This can also be specified as a
+  Keybase username using the format `keybase:<username>`. When supplied, the
+  generated root token will be encrypted and base64-encoded with the given
+  public key.
+
+- `-status` `(bool": false)` - Print the current initialization status. An exit
+  code of 0 means the Vault is already initialized. An exit code of 1 means an
+  error occurred. An exit code of 2 means the Vault is not initialized.
+
+### Consul options
+
+- `-consul-auto` `(bool: false)` - Perform automatic service discovery using
+  Consul in HA mode. When all nodes in a Vault HA cluster are registered with
+  Consul, enabling this option will trigger automatic service discovery based on
+  the provided -consul-service value. When Consul is Vault's HA backend, this
+  functionality is automatically enabled. Ensure the proper Consul environment
+  variables are set (CONSUL_HTTP_ADDR, etc). When only one Vault server is
+  discovered, it will be initialized automatically. When more than one Vault
+  server is discovered, they will each be output for selection. The default is
+  false.
+
+- `-consul-service` `(string: "vault")` - Name of the service in Consul under
+  which the Vault servers are registered.
+
+### HSM and KMS options
+
+- `-recovery-pgp-keys` `(string: "...")` - Behaves like `-pgp-keys`, but for the
+  recovery key shares. This is only available with [Auto Unseal](/vault/docs/concepts/seal#auto-unseal) seals (HSM, KMS and Transit seals).
+
+- `-recovery-shares` `(int: 5)` - Number of key shares to split the recovery key
+  into. This is only available with [Auto Unseal](/vault/docs/concepts/seal#auto-unseal) seals (HSM, KMS and Transit seals).
+
+- `-recovery-threshold` `(int: 3)` - Number of key shares required to
+  reconstruct the recovery key. This is only available with [Auto Unseal](/vault/docs/concepts/seal#auto-unseal) seals (HSM, KMS and Transit seals).
+
+- `-stored-shares` `(int: 0)` - Number of unseal keys to store on an HSM. This
+  must be equal to `-key-shares`.
+
+-> **Recovery keys:** Refer to the
+ [Seal/Unseal](/vault/docs/concepts/seal#recovery-key) documentation to learn more
+ about recovery keys.
