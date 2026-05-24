@@ -11,15 +11,19 @@ TODO:
 ### Dev mode
 TODO:
 ### TODO:
+
 ## View the Vault UI
-### TODO:
+### ❌NOT exposed -- as -- service❌
+TODO:
 ### ways to expose it
 #### -- via -- port-forwarding
 * `kubectl port-forward vault-0 8200:8200`
 * http://localhost:8200
 #### -- via -- `ui` configuration value
 TODO:
+
 ## Initialize & unseal Vault
+
 * `kubectl get pods -l app.kubernetes.io/name=vault`
   * 's return: 0 READY pods
     * Reason:🧠they are NOT initialized🧠
